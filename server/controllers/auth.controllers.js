@@ -105,7 +105,7 @@ export const logout = async (req, res) => {
   }
 };
 
-// refreshes the the access token
+// refreshes the access token
 export const refreshToken = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
