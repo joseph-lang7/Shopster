@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "dev": "nodemon server/server.js",
+    "dev": "node --watch --env-file=.env server/server.js",
     "start": "node server/server.js"
   },
   "keywords": [],
@@ -15,14 +15,10 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.0",
     "stripe": "^17.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
   }
 }
