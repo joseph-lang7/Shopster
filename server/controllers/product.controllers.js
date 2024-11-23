@@ -33,6 +33,24 @@ export const getFeaturedProducts = async (req, res) => {
   }
 };
 
+export const getRecommendedProducts = async (req, res) => {
+  try {
+    let products = await Product.aggregate([
+      {
+        $sample: { size: 3 },
+      },
+      {
+        $project: { _id: 1, name: 1, description: 1, image: 1, price: 1 },
+      },
+    ]);
+    return res.json(products);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Internal error", error: error.message });
+  }
+};
+
 export const createProduct = async (req, res) => {
   try {
     const { name, description, price, image, category } = req.body;
