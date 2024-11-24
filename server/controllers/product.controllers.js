@@ -4,9 +4,9 @@ import cloudinary from "../lib/cloudinary.js";
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
-    res.json({ products });
+    return res.json({ products });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return es.status(500).json({ message: error.message });
   }
 };
 
@@ -14,7 +14,7 @@ export const getFeaturedProducts = async (req, res) => {
   try {
     let featuredProducts = await redis.get("featured_products");
     if (featuredProducts) {
-      res.json(JSON.parse(featuredProducts));
+      return res.json(JSON.parse(featuredProducts));
     }
 
     // if not in redis, fetch from mongodb
@@ -26,10 +26,20 @@ export const getFeaturedProducts = async (req, res) => {
 
     //  store in redis for quick access
     await redis.set("featured_products", JSON.stringify(featuredProducts));
-    res.json(featuredProducts);
+    return res.json(featuredProducts);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getProductsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const products = await Product.find({ category });
+    return res.json(products);
+  } catch (error) {
+    return res.status((500).json({ message: error.message }));
   }
 };
 
@@ -71,10 +81,10 @@ export const createProduct = async (req, res) => {
         : "",
       category,
     });
-    res.status(201).json(product);
+    return res.status(201).json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -96,6 +106,8 @@ export const deleteProduct = async (req, res) => {
     await Product.findByIdAndDelete(req.params.id);
     return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };
